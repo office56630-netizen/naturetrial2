@@ -1,0 +1,450 @@
+/* --- Google Fonts Import --- */
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Playfair+Display:wght@400;700&family=Handlee&display=swap');
+
+/* --- Variables (for easy theme changes) --- */
+:root {
+    --primary-color: #79A3B1; /* Soft Blue Sky */
+    --secondary-color: #B6CEDE; /* Lighter Blue */
+    --accent-color: #A0D6B4; /* Light Green */
+    --text-dark: #333333;
+    --text-light: #555555;
+    --background-light: #F0F8F6; /* Very light green/white */
+    --background-blue: #EBF4F8; /* Very light blue */
+    --border-color: #D3E0EA;
+    --footer-bg: #6B8B9A; /* Slightly darker blue for footer */
+    --nav-link-hover: #D8EEF8;
+
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Merriweather', serif;
+    --font-handwritten: 'Handlee', cursive;
+
+    --max-width: 1200px;
+}
+
+/* --- Global Resets & Base Styles --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-body);
+    line-height: 1.6;
+    color: var(--text-light);
+    background-color: var(--background-light);
+    scroll-behavior: smooth;
+}
+
+.container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    color: var(--text-dark);
+    margin-bottom: 0.8em;
+}
+
+h1 { font-size: 2.8em; }
+h2 { font-size: 2.2em; }
+h3 { font-size: 1.8em; }
+
+p {
+    margin-bottom: 1em;
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--accent-color);
+}
+
+ul {
+    list-style: none;
+}
+
+/* --- Buttons --- */
+.btn {
+    display: inline-block;
+    padding: 12px 25px;
+    border-radius: 5px;
+    font-family: var(--font-body);
+    font-weight: 700;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    text-align: center;
+}
+
+.primary-btn {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: 2px solid var(--primary-color);
+}
+
+.primary-btn:hover {
+    background-color: #658D9A; /* Slightly darker primary */
+    border-color: #658D9A;
+}
+
+.secondary-btn {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.secondary-btn:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.link-btn {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    padding: 0;
+    font-weight: 700;
+}
+
+.link-btn:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
+}
+
+/* --- Header --- */
+header {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 15px 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-family: var(--font-handwritten);
+    font-size: 1.8em;
+    font-weight: 700;
+}
+
+.logo a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.main-nav ul {
+    display: flex;
+    gap: 25px;
+}
+
+.main-nav a {
+    color: var(--text-dark);
+    font-weight: 400;
+    font-size: 1.1em;
+    padding: 5px 0;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.main-nav a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    display: block;
+    margin-top: 5px;
+    left: 0;
+    background: var(--accent-color);
+    transition: width 0.3s ease;
+}
+
+.main-nav a:hover::after,
+.main-nav a.active::after {
+    width: 100%;
+}
+
+.nav-toggle {
+    display: none; /* Hidden on desktop */
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    position: relative;
+    z-index: 1001; /* Ensure it's above the nav */
+}
+
+.nav-toggle span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: var(--text-dark);
+    margin: 5px 0;
+    transition: all 0.3s ease;
+}
+
+/* --- Hero Section --- */
+.hero-section {
+    background: url(morskie-oko-tatry.jpg) no-repeat center center/cover;
+    color: #fff;
+    text-align: center;
+    padding: 100px 20px;
+    min-height: 500px; /* Adjust as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4); /* Dark overlay */
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+}
+
+.hero-content h1 {
+    color: #fff;
+    font-size: 3.5em;
+    margin-bottom: 20px;
+    line-height: 1.1;
+}
+
+.hero-content p {
+    font-size: 1.3em;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap; /* For small screens */
+}
+
+/* --- Intro Section --- */
+.intro-section {
+    padding: 80px 0;
+    text-align: center;
+    background-color: #fff; /* White background for contrast */
+    border-bottom: 1px solid var(--border-color);
+}
+
+.intro-section h2 {
+    margin-bottom: 40px;
+    font-size: 2.5em;
+}
+
+.intro-section > p { /* Target the direct paragraph under section */
+    max-width: 800px;
+    margin: 0 auto 50px auto;
+    font-size: 1.1em;
+    color: var(--text-light);
+}
+
+.intro-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.grid-item {
+    background-color: var(--background-blue);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    text-align: left;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.grid-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.grid-item h3 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.grid-item p {
+    font-size: 0.95em;
+    margin-bottom: 25px;
+    color: var(--text-light);
+}
+
+/* --- Footer --- */
+footer {
+    background-color: var(--footer-bg);
+    color: #fff;
+    text-align: center;
+    padding: 30px 0;
+    font-size: 0.9em;
+}
+
+footer p {
+    margin-bottom: 10px;
+}
+
+.footer-links a {
+    color: #fff;
+    margin: 0 10px;
+    opacity: 0.8;
+}
+
+.footer-links a:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+/* --- Responsive Design (Mobile First Approach) --- */
+
+/* For screens smaller than 768px (Tablets & Phones) */
+@media (max-width: 768px) {
+    h1 { font-size: 2.2em; }
+    h2 { font-size: 1.8em; }
+    h3 { font-size: 1.5em; }
+
+    .header-content {
+        flex-wrap: wrap;
+    }
+
+    .main-nav {
+        display: none; /* Hide navigation by default on small screens */
+        width: 100%;
+        flex-direction: column;
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .main-nav.active {
+        display: flex; /* Show navigation when active */
+    }
+
+    .main-nav ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .main-nav li {
+        width: 100%;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .main-nav li:last-child {
+        border-bottom: none;
+    }
+    .main-nav a {
+        display: block;
+        padding: 10px 0;
+        font-size: 1em;
+        color: var(--text-dark);
+    }
+    .main-nav a::after {
+        display: none; /* Hide underline animation on mobile */
+    }
+    .main-nav a:hover {
+        background-color: var(--nav-link-hover);
+    }
+
+    .nav-toggle {
+        display: block; /* Show hamburger icon */
+    }
+
+    .nav-toggle.active span:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+    .nav-toggle.active span:nth-child(2) {
+        opacity: 0;
+    }
+    .nav-toggle.active span:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+
+    .hero-section {
+        padding: 80px 20px;
+        min-height: 400px;
+    }
+
+    .hero-content h1 {
+        font-size: 2.5em;
+    }
+
+    .hero-content p {
+        font-size: 1em;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .intro-section {
+        padding: 60px 0;
+    }
+
+    .intro-section > p {
+        font-size: 1em;
+        margin-bottom: 30px;
+    }
+
+    .intro-grid {
+        grid-template-columns: 1fr; /* Stack items vertically */
+    }
+}
+
+/* For screens smaller than 480px (Very small phones) */
+@media (max-width: 480px) {
+    .logo {
+        font-size: 1.5em;
+    }
+
+    .hero-content h1 {
+        font-size: 2em;
+    }
+}
+
+/* General Page Section Styling (Apply to all content sections) */
+section {
+    padding: 60px 0;
+}
+
+section:nth-of-type(odd) { /* For alternating background colors */
+    background-color: var(--background-light);
+}
+
+section:nth-of-type(even) {
+    background-color: #fff;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 2.5em;
+    color: var(--primary-color);
+}

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Mood Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Handlee&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #eef2f6;
+            color: #334e68;
+            padding: 0;
+            text-align: center;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Header */
+        header {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-family: 'Handlee', cursive;
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #79A3B1;
+        }
+
+        .logo a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .main-nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 25px;
+        }
+
+        .main-nav a {
+            color: #333333;
+            font-weight: 400;
+            font-size: 1.1em;
+            padding: 5px 0;
+            position: relative;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .main-nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            display: block;
+            margin-top: 5px;
+            left: 0;
+            background: #A0D6B4;
+            transition: width 0.3s ease;
+        }
+
+        .main-nav a:hover::after,
+        .main-nav a.active::after {
+            width: 100%;
+        }
+
+        .nav-toggle {
+            display: none;
+            cursor: pointer;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .nav-toggle span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: #333;
+            border-radius: 2px;
+            transition: transform 0.3s ease;
+        }
+
+        /* Main container for sections */
+        .section {
+            margin: 20px auto;
+            padding: 30px;
+            max-width: 600px;
+            border-radius: 20px;
+            background: #ffffff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        /* Heading styling */
+        h1,
+        h2 {
+            font-weight: 700;
+            color: #1e3a5f;
+        }
+
+        /* Button styling */
+        button,
+        .import-btn {
+            padding: 12px 25px;
+            margin: 10px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 700;
+            transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+
+        /* Button hover effects */
+        button:hover,
+        .import-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            opacity: 0.9;
+        }
+
+        /* Specific mood button colors */
+        .happy {
+            background: #66bb6a;
+            color: white;
+        }
+
+        .sad {
+            background: #42a5f5;
+            color: white;
+        }
+
+        .angry {
+            background: #ef5350;
+            color: white;
+        }
+
+        .calm {
+            background: #26a69a;
+            color: white;
+        }
+
+        .excited {
+            background: #ffca28;
+            color: white;
+        }
+
+        .lonely {
+            background: none;
+            border: 2px solid #90a4ae;
+            color: #546e7a;
+        }
+
+        /* Export / Import buttons */
+        .calm,
+        .import-btn {
+            background: #26a69a;
+            color: white;
+        }
+
+        /* Log section styling */
+        .log {
+            text-align: left;
+            margin-top: 25px;
+        }
+
+        .log-entry {
+            background: #f8f9fa;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 15px;
+            border-left: 5px solid;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Border colors for log entries */
+        .log-entry.happy-mood {
+            border-left-color: #66bb6a;
+        }
+
+        .log-entry.sad-mood {
+            border-left-color: #42a5f5;
+        }
+
+        .log-entry.angry-mood {
+            border-left-color: #ef5350;
+        }
+
+        .log-entry.calm-mood {
+            border-left-color: #26a69a;
+        }
+
+        .log-entry.excited-mood {
+            border-left-color: #ffca28;
+        }
+
+        .log-entry.lonely-mood {
+            border-left-color: #90a4ae;
+        }
+
+        .log-entry.quiz-question-mood {
+            border-left-color: #79A3B1;
+        }
+
+        .log-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .log-mood {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #1e3a5f;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .log-date {
+            font-size: 0.9em;
+            color: #78909c;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            margin-top: 10px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .main-nav {
+                display: none; /* Hide the menu by default on smaller screens */
+                width: 100%;
+                position: absolute;
+                top: 60px; /* Adjust based on header height */
+                left: 0;
+                background-color: rgba(255, 255, 255, 0.95);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            .main-nav.active {
+                display: block; /* Show menu when toggle is active */
+            }
+
+            .main-nav ul {
+                flex-direction: column;
+                gap: 0;
+                padding: 10px 0;
+            }
+
+            .main-nav li {
+                width: 100%;
+            }
+
+            .main-nav a {
+                display: block;
+                padding: 15px 20px;
+                text-align: center;
+                border-bottom: 1px solid #eee;
+            }
+            
+            .main-nav a::after {
+                display: none; /* Hide underline on mobile */
+            }
+
+            .nav-toggle {
+                display: flex; /* Show the hamburger menu icon */
+                z-index: 1001; /* Ensure toggle is on top */
+            }
+
+            .mood-buttons {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+            }
+
+            button, .import-btn {
+                width: calc(50% - 20px); /* Two buttons per row with some spacing */
+                font-size: 16px;
+                padding: 10px 15px;
+                margin: 5px;
+            }
+            
+            .dropdown-content button, .dropdown-content label {
+                width: auto;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <a href="#">The Whispering Willow</a>
+            </div>
+            <div class="nav-toggle" onclick="toggleNav()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <nav class="main-nav" id="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="nature-gallery.html">Nature Gallery</a></li>
+                    <li><a href="book.html">Books</a></li>
+                    <li><a href="#" class="active">Mood</a></li>
+                    <li><a href="youtube-music-app/public/music.html">Music</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="section" id="mood-section">
+        <h2>Welcome to Your Mood Tracker</h2>
+        <p>How are you feeling right now? Select a mood to log your thoughts.</p>
+        <div class="mood-buttons">
+            <button class="happy" aria-label="Happy" onclick="chooseMood('Happy')">😊 Happy</button>
+            <button class="sad" aria-label="Sad" onclick="chooseMood('Sad')">😔 Sad</button>
+            <button class="angry" aria-label="Angry" onclick="chooseMood('Angry')">😡 Angry</button>
+            <button class="calm" aria-label="Calm" onclick="chooseMood('Calm')">😌 Calm</button>
+            <button class="excited" aria-label="Excited" onclick="chooseMood('Excited')">🤩 Excited</button>
+            <button class="lonely" aria-label="Lonely" onclick="chooseMood('Lonely')">🥺 Lonely</button>
+        </div>
+
+        <div class="dropdown" style="margin-top: 30px;">
+            <button onclick="toggleDropdown()" class="calm">Options ▾</button>
+            <div id="dropdownMenu" class="dropdown-content">
+                <button onclick="exportData()" class="calm">Export Log</button>
+                <label for="import-file" class="import-btn">Import Log</label>
+                <input type="file" id="import-file" style="display: none;" accept=".json" onchange="importData(event)">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="section" id="log-section">
+        <h2>📝 Your Mood Log</h2>
+        <p>Your personal reflections and thoughts.</p>
+        <div id="mood-notes-log" class="log"></div>
+
+        <hr style="margin: 30px 0; border: 0; border-top: 1px solid #eef2f6;">
+
+        <h2>💡 Quiz Answers</h2>
+        <p>Answers to your daily reflection questions.</p>
+        <div id="quiz-answers-log" class="log"></div>
+    </div>
+
+    <script>
+        function chooseMood(mood) {
+            window.location.href = `note.html?mood=${mood}`;
+        }
+
+        function getMoodEmoji(mood) {
+            switch (mood) {
+                case 'Happy': return '😊';
+                case 'Sad': return '😔';
+                case 'Angry': return '😡';
+                case 'Calm': return '😌';
+                case 'Excited': return '🤩';
+                case 'Lonely': return '🥺';
+                case 'Quiz Question': return '💡';
+                default: return '';
+            }
+        }
+
+        function showLog() {
+            const log = JSON.parse(localStorage.getItem("moodLog")) || [];
+            const moodNotesLogDiv = document.getElementById("mood-notes-log");
+            const quizAnswersLogDiv = document.getElementById("quiz-answers-log");
+
+            moodNotesLogDiv.innerHTML = "";
+            quizAnswersLogDiv.innerHTML = "";
+
+            const moodNotes = log.filter(entry => entry.mood !== 'Quiz Question').reverse();
+            const quizAnswers = log.filter(entry => entry.mood === 'Quiz Question').reverse();
+
+            if (moodNotes.length === 0) {
+                moodNotesLogDiv.innerHTML = "<p>Your mood notes are empty. Start by logging your first mood!</p>";
+            } else {
+                moodNotes.forEach(entry => {
+                    const entryElement = document.createElement('div');
+                    entryElement.classList.add('log-entry', `${entry.mood.toLowerCase().replace(' ', '-')}-mood`);
+                    entryElement.innerHTML = `
+                      <div class="log-header">
+                        <span class="log-mood">${getMoodEmoji(entry.mood)} ${entry.mood}</span>
+                        <span class="log-date">${entry.time}</span>
+                      </div>
+                      <p>${entry.note}</p>
+                    `;
+                    moodNotesLogDiv.appendChild(entryElement);
+                });
+            }
+
+            if (quizAnswers.length === 0) {
+                quizAnswersLogDiv.innerHTML = "<p>Your quiz answers will appear here after you save them.</p>";
+            } else {
+                quizAnswers.forEach(entry => {
+                    const entryElement = document.createElement('div');
+                    entryElement.classList.add('log-entry', `${entry.mood.toLowerCase().replace(' ', '-')}-mood`);
+                    entryElement.innerHTML = `
+                      <div class="log-header">
+                        <span class="log-mood">${getMoodEmoji(entry.mood)} ${entry.mood}</span>
+                        <span class="log-date">${entry.time}</span>
+                      </div>
+                      <p>${entry.note}</p>
+                    `;
+                    quizAnswersLogDiv.appendChild(entryElement);
+                });
+            }
+        }
+
+        function exportData() {
+            const log = localStorage.getItem("moodLog");
+            if (!log) {
+                alert("No data to export!");
+                return;
+            }
+            const blob = new Blob([log], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `mood_log_${new Date().toISOString().slice(0, 10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) {
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    const importedLog = JSON.parse(e.target.result);
+                    if (Array.isArray(importedLog) && importedLog.every(e => e.mood && e.time && e.note)) {
+                        const confirmImport = confirm("This will replace your current mood log. Do you want to continue?");
+                        if (confirmImport) {
+                            localStorage.setItem("moodLog", JSON.stringify(importedLog));
+                            showLog();
+                            alert("Mood log imported successfully!");
+                        }
+                    } else {
+                        alert("Invalid file format. Please upload a valid mood log JSON file.");
+                    }
+                } catch (error) {
+                    alert("Error parsing the file. Please ensure it is a valid JSON file.");
+                    console.error("Import error:", error);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        window.onload = showLog;
+
+        function toggleDropdown() {
+            const menu = document.getElementById("dropdownMenu");
+            menu.style.display = (menu.style.display === "block") ? "none" : "block";
+        }
+
+        // JavaScript for mobile nav toggle
+        function toggleNav() {
+            const nav = document.getElementById("main-nav");
+            nav.classList.toggle("active");
+        }
+    </script>
+
+</body>
+
+</html>

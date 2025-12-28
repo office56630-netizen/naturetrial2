@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Write Your Mood Note</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* General body and font styling */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #eef2f6;
+            color: #334e68;
+            padding: 30px;
+            text-align: center;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Main container for sections */
+        .section {
+            margin: 20px auto;
+            padding: 30px;
+            max-width: 600px;
+            border-radius: 20px;
+            background: #ffffff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        h1, h2 {
+            font-weight: 700;
+            color: #1e3a5f;
+            font-size: 2em; /* Default font size for larger screens */
+        }
+        
+        p {
+            font-size: 1.1em;
+        }
+
+        /* Text area styling */
+        textarea {
+            width: 90%;
+            height: 150px;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #d1d9e6; /* Soft border color */
+            font-size: 16px;
+            font-family: 'Roboto', sans-serif;
+            resize: vertical; /* Allow vertical resizing only */
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05); /* Subtle inner shadow */
+            transition: border-color 0.3s, box-shadow 0.3s;
+            box-sizing: border-box; /* Ensure padding is included in the width */
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #42a5f5; /* Highlight border on focus */
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.08), 0 0 5px rgba(66, 165, 245, 0.5);
+        }
+
+        /* Button styling */
+        .save-btn {
+            padding: 12px 30px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            background: #42a5f5;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            background: #2196f3;
+        }
+
+        /* Go back link */
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #78909c;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: #1e3a5f;
+        }
+
+        /* Responsive Design for smaller screens */
+        @media (max-width: 600px) {
+            body {
+                padding: 15px; /* Reduce padding on smaller screens */
+            }
+            
+            .section {
+                padding: 20px; /* Reduce inner padding */
+                margin: 10px; /* Smaller margins for a better fit */
+            }
+
+            h2 {
+                font-size: 1.5em; /* Smaller heading font size */
+            }
+            
+            p {
+                font-size: 1em; /* Smaller paragraph font size */
+            }
+
+            textarea {
+                width: 100%; /* Full width on small screens for better usability */
+                height: 120px; /* Slightly smaller height */
+                font-size: 14px; /* Smaller font size for the text area */
+            }
+
+            .save-btn {
+                width: 100%; /* Make the button full width */
+                font-size: 16px; /* Smaller button font size */
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="section note-section" id="note-section">
+        <h2 id="note-heading"></h2>
+        <p id="question-text"></p>
+        <textarea id="noteInput" placeholder="Write your thoughts here..."></textarea><br>
+        <button class="save-btn" onclick="saveNote()">Save Note</button>
+        <a href="mood.html" class="back-link">Cancel and go back</a>
+    </div>
+
+    <script>
+        const moodQuestions = {
+            'Happy': [
+                "What is one small thing that made you smile today?",
+                "Describe a moment of genuine happiness you experienced.",
+                "What are you most grateful for in this moment?",
+                "Recall a funny or joyful memory from today."
+            ],
+            'Sad': [
+                "What is one thing you can do to be kind to yourself right now?",
+                "If your day was a color, what would it be and why?",
+                "What is a small step you can take to feel a little better?",
+                "Write about one positive memory, no matter how small."
+            ],
+            'Angry': [
+                "What's one way you can release this frustration in a healthy way?",
+                "Describe a peaceful place you can imagine to calm yourself.",
+                "What is the root of your anger? Try to write it without judgment.",
+                "Think of a song that helps you feel grounded. What is it?"
+            ],
+            'Calm': [
+                "Describe the most peaceful moment of your day.",
+                "What sensations do you feel in your body right now?",
+                "What are you looking forward to most this week?",
+                "What sound or smell would you use to describe your mood?"
+            ],
+            'Excited': [
+                "What's the best thing about what you're excited about?",
+                "What positive energy do you want to carry into tomorrow?",
+                "Describe your excitement using a metaphor.",
+                "How can you share this good energy with someone else?"
+            ],
+            'Lonely': [
+                "What is something you can do right now to feel more connected?",
+                "Think about your favorite place. How does it make you feel?",
+                "What's one thing you admire about yourself?",
+                "Recall a time you felt deeply connected to someone or something."
+            ]
+        };
+
+        // Get the mood and question from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const mood = urlParams.get('mood');
+        const question = urlParams.get('question');
+        const moodHeading = document.getElementById("note-heading");
+        const questionText = document.getElementById("question-text");
+        const noteInput = document.getElementById("noteInput");
+
+        // Display the appropriate content based on the URL
+        if (question) {
+            // If there's a question in the URL, this is the quiz stage
+            moodHeading.textContent = `A Question for You`;
+            questionText.textContent = decodeURIComponent(question);
+            noteInput.value = ""; // Clear the text area for the new answer
+            noteInput.placeholder = "Write your answer here...";
+            document.querySelector(".save-btn").onclick = saveQuizAnswer;
+            document.querySelector(".save-btn").textContent = "Save Answer";
+        } else if (mood) {
+            // This is the initial note-taking stage
+            moodHeading.textContent = `You're feeling ${mood}.`;
+            questionText.textContent = "Take a moment to reflect on your day and write down what's on your mind.";
+        } else {
+            // Fallback if mood isn't specified
+            moodHeading.textContent = `Log your thoughts`;
+        }
+
+        function saveNote() {
+            const note = noteInput.value.trim();
+            if (!note) {
+                alert("Please write something before saving!");
+                return;
+            }
+
+            // Save the mood entry to local storage
+            let log = JSON.parse(localStorage.getItem("moodLog")) || [];
+            log.push({
+                mood: mood,
+                note: note,
+                time: new Date().toLocaleString()
+            });
+            localStorage.setItem("moodLog", JSON.stringify(log));
+
+            // Pick a random question based on the selected mood
+            const relevantQuestions = moodQuestions[mood] || [];
+            if (relevantQuestions.length > 0) {
+                const randomIndex = Math.floor(Math.random() * relevantQuestions.length);
+                const selectedQuestion = relevantQuestions[randomIndex];
+                const encodedQuestion = encodeURIComponent(selectedQuestion);
+                window.location.href = `note.html?mood=${mood}&question=${encodedQuestion}`;
+            } else {
+                // If no questions are defined for a mood, redirect back
+                alert("Your note has been saved!");
+                window.location.href = "mood.html";
+            }
+        }
+
+        function saveQuizAnswer() {
+            const note = noteInput.value.trim();
+            if (!note) {
+                alert("Please write something before saving your answer!");
+                return;
+            }
+
+            // Save the quiz answer as a new entry
+            let log = JSON.parse(localStorage.getItem("moodLog")) || [];
+            log.push({
+                mood: "Quiz Question",
+                note: note,
+                time: new Date().toLocaleString()
+            });
+            localStorage.setItem("moodLog", JSON.stringify(log));
+
+            // Redirect back to the main mood page
+            alert("Your answer has been saved!");
+            window.location.href = "mood.html";
+        }
+    </script>
+
+</body>
+</html>

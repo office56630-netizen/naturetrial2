@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Book Library</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Handlee&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #f4f7f9;
+            color: #334e68;
+            padding: 0;
+            margin: 0;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Header Styling */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-family: 'Handlee', cursive;
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #79A3B1;
+        }
+
+        .logo a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .main-nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 25px;
+        }
+
+        .main-nav a {
+            color: #333333;
+            font-weight: 400;
+            font-size: 1.1em;
+            padding: 5px 0;
+            position: relative;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .main-nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            display: block;
+            margin-top: 5px;
+            left: 0;
+            background: #A0D6B4;
+            transition: width 0.3s ease;
+        }
+
+        .main-nav a:hover::after,
+        .main-nav a.active::after {
+            width: 100%;
+        }
+
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            position: relative;
+            z-index: 1001;
+        }
+
+        .nav-toggle span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: #333333;
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+
+        /* Library Container */
+        .library-container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            text-align: center;
+            color: #1e3a5f;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+        }
+
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+            justify-content: center;
+        }
+
+        /* Animation Keyframes */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .book-card {
+            background: #f0f4f7;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0; /* Initial state for animation */
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        .book-card:nth-child(1) { animation-delay: 0.1s; }
+        .book-card:nth-child(2) { animation-delay: 0.2s; }
+        .book-card:nth-child(3) { animation-delay: 0.3s; }
+        .book-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .book-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .book-cover {
+            width: 150px;
+            height: 220px;
+            background: linear-gradient(to right, #a0d6b4, #79a3b1);
+            margin: 0 auto 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .book-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #1e3a5f;
+            margin-bottom: 5px;
+        }
+
+        .book-author {
+            font-size: 0.9em;
+            color: #78909c;
+            margin-bottom: 15px;
+        }
+
+        .book-actions button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: background 0.3s ease, transform 0.2s;
+            margin: 5px;
+        }
+
+        .read-btn {
+            background: #26a69a;
+            color: #fff;
+        }
+
+        .download-btn {
+            background: #66bb6a;
+            color: #fff;
+        }
+
+        .read-btn:hover {
+            background: #1f8d80;
+            transform: translateY(-2px);
+        }
+        .download-btn:hover {
+            background: #56a059;
+            transform: translateY(-2px);
+        }
+        
+        /* Message Box Styling */
+        .message-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1002;
+            text-align: center;
+            display: none; /* Initially hidden */
+            max-width: 300px;
+        }
+
+        .message-box button {
+            margin-top: 15px;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 20px;
+            background: #42a5f5;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Request Section */
+        .request-section {
+            width: 90%;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        .request-section h2 {
+            font-size: 1.8em;
+            color: #1e3a5f;
+            margin-bottom: 10px;
+        }
+        
+        .request-btn {
+            background: #79A3B1;
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 700;
+            transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .request-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            opacity: 0.9;
+        }
+
+        @media (max-width: 600px) {
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .main-nav {
+                width: 100%;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-in-out;
+            }
+            .main-nav.active {
+                max-height: 200px;
+            }
+            .main-nav ul {
+                flex-direction: column;
+                width: 100%;
+                text-align: left;
+                margin-top: 10px;
+            }
+            .nav-toggle {
+                display: block;
+            }
+            .book-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <a href="index.html">The Whispering Willow</a>
+            </div>
+            <nav class="main-nav" id="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="nature-gallery.html">Nature Gallery</a></li>
+                    <li><a href="book-library.html" class="active">Books</a></li>
+                    <li><a href="mood.html">Mood</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="library-container">
+        <h1>Our Library</h1>
+        <div class="book-grid">
+            <!-- Book 1 -->
+            <div class="book-card">
+                <div class="book-cover" style="background-image: url(bookse/warm.jpg); background-size: cover; background-repeat: no-repeat;"></div>
+                <div class="book-title">Warmth </div>
+                <div class="book-author">by Rithvik Singh </div>
+                <div class="book-actions">
+                    <button class="read-btn" onclick="showMessage1()">Read</button>
+                    <button class="download-btn" onclick="showMessage1()">Download</button>
+                </div>
+            </div>
+            
+            <!-- Book 2 -->
+            <div class="book-card">
+                <div class="book-cover" style="background-image: url(bookse/Dont.jpg); background-size: cover; background-repeat: no-repeat;"></div>
+                <div class="book-title">I Don't Love You Anymore</div>
+                <div class="book-author">by Rithvik Singh </div>
+                <div class="book-actions">
+                    <button class="read-btn" onclick="showMessage2()">Read</button>
+                    <button class="download-btn" onclick="showMessage2()">Download</button>
+                </div>
+            </div>
+            
+            <!-- Book 3 -->
+            <div class="book-card">
+                <div class="book-cover" style="background-image: url(bookse/FINALGIRL.jpg); background-size: cover; background-repeat: no-repeat;">C</div>
+                <div class="book-title">FINAL GIRL</div>
+                <div class="book-author">by Riley Sager</div>
+                <div class="book-actions">
+                    <button class="read-btn" onclick="showMessage3()">Read</button>
+                    <button class="download-btn" onclick="showMessage3()">Download</button>
+                </div>
+            </div>
+            
+            <!-- Book 4 -->
+            <div class="book-card">
+                <div class="book-cover">D</div>
+                <div class="book-title">The Drifting City</div>
+                <div class="book-author">by Silas Thorne</div>
+                <div class="book-actions">
+                    <button class="read-btn" onclick="showMessage4()">Read</button>
+                    <button class="download-btn" onclick="showMessage4()">Download</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Request Section -->
+    <div class="request-section">
+        <h2>Can't find a book you love?</h2>
+        <p>If you have a book suggestion or want to request a specific title to be added to our library, feel free to let us know!</p>
+        <a href="contact.html" class="request-btn">Request a Book</a>
+    </div>
+    
+    <!-- Custom Message Box -->
+    <div id="messageBox" class="message-box">
+        <p id="messageText"></p>
+        <button onclick="closeMessage()">OK</button>
+    </div>
+
+    <script>
+       
+
+        //open section 
+
+        function showMessage1() {
+            window.open("https://drive.google.com/file/d/1Tf3PFiIeGorjePpClYnLZc4nXTbFdSzd/view?usp=sharing")
+        }
+        function showMessage2() {
+            window.open("https://drive.google.com/file/d/1LbDenh2UyeB-LmYA30F-94YJ7Iln3cHh/view?usp=sharing")
+        }
+        function showMessage3() {
+            window.open("https://drive.google.com/file/d/1jrCedRaKyhrISz0JlmccLAPl8qNpjxcL/view?usp=sharing")
+        }
+        function showMessage4() {
+            window.open("")
+        }
+        
+        // Custom function to close the message box
+        function closeMessage() {
+            document.getElementById('messageBox').style.display = 'none';
+        }
+
+        // Mobile navigation toggle
+        const navToggle = document.getElementById('nav-toggle');
+        const mainNav = document.getElementById('main-nav');
+        navToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,60 @@
+/* --- Nature Gallery Specific Styles --- */
+.page-section {
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
+.section-description {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 50px auto;
+    font-size: 1.1em;
+    color: var(--text-light);
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.gallery-item {
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Keep for hover effect */
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 250px; /* Fixed height for consistency */
+    object-fit: cover;
+    display: block;
+}
+
+.gallery-info {
+    padding: 20px;
+}
+
+.gallery-info h3 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.gallery-info p {
+    font-size: 0.9em;
+    color: var(--text-light);
+}
+
+/* Responsive adjustment for gallery */
+@media (max-width: 768px) {
+    .gallery-grid {
+        grid-template-columns: 1fr; /* Stack items vertically on smaller screens */
+    }
+}

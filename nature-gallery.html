@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Whispering Willow: Nature Gallery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&family=Playfair+Display:wght@400;700&family=Handlee&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #A0D6B4;
+            --secondary-color: #79A3B1;
+            --text-color: #334e68;
+            --light-bg: #f4f7f9;
+            --card-bg: #fff;
+            --subtle-text: #78909c;
+        }
+
+        body {
+            font-family: 'Merriweather', serif;
+            color: var(--text-color);
+            background-color: var(--light-bg);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* HEADER */
+        header {
+            background-color: rgba(255, 255, 255, 0.98);
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 9999;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Handlee', cursive;
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+        .logo a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* NAVIGATION */
+        .main-nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 25px;
+        }
+
+        .main-nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 1.1em;
+            padding: 5px 0;
+            position: relative;
+        }
+
+        .main-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: 0.3s ease;
+        }
+
+        .main-nav a:hover::after,
+        .main-nav a.active::after {
+            width: 100%;
+        }
+
+        /* MOBILE NAV TOGGLE */
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .nav-toggle span {
+            width: 26px;
+            height: 3px;
+            background: var(--text-color);
+            display: block;
+            margin: 4px;
+            transition: 0.4s;
+        }
+
+        /* HAMBURGER ANIMATION */
+        .nav-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .nav-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .nav-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* Mobile Nav Hidden by default */
+        @media (max-width: 700px) {
+            .main-nav {
+                position: absolute;
+                top: 70px;
+                right: 0;
+                width: 100%;
+                background: white;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            }
+
+            .main-nav.active {
+                max-height: 300px;
+            }
+
+            .main-nav ul {
+                flex-direction: column;
+                padding: 15px;
+                gap: 15px;
+            }
+
+            .nav-toggle {
+                display: block;
+            }
+        }
+
+        /* PAGE SECTION */
+        .page-section {
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .section-description {
+            max-width: 800px;
+            margin: 0 auto 40px;
+            color: var(--subtle-text);
+        }
+
+        /* GALLERY */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 25px;
+        }
+
+        .gallery-item {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            animation: fadeIn 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 230px;
+            object-fit: cover;
+        }
+
+        .gallery-info {
+            padding: 15px;
+            text-align: left;
+        }
+
+        .gallery-info h3 {
+            margin: 0;
+            color: var(--secondary-color);
+        }
+
+        .gallery-info p {
+            font-size: 0.9em;
+            color: var(--subtle-text);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* FOOTER */
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .footer-links a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary-color);
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="container header-content">
+            <div class="logo"><a href="index.html">The Whispering Willow</a></div>
+
+            <button class="nav-toggle" id="nav-toggle">
+                <span></span><span></span><span></span>
+            </button>
+
+            <nav class="main-nav" id="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a class="active" href="nature-gallery.html">Nature Gallery</a></li>
+                    <li><a href="book.html">Books</a></li>
+                    <li><a href="mood.html">Mood</a></li>
+                    <li><a href="youtube-music-app/public/music.html">Music</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+
+        </div>
+    </header>
+
+    <main>
+        <section class="container page-section">
+            <h2 class="section-title">A Glimpse of Nature's Serenity</h2>
+            <p class="section-description">Step into our visual sanctuary...</p>
+
+            <div class="gallery-grid">
+               <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb" alt="Misty Forest">
+                    <div class="gallery-info">
+                        <h3>Misty Morning Woods</h3>
+                        <p>A tranquil scene from a dew-kissed forest at dawn, shrouded in a gentle mist.</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee" alt="Azure Cloudscape">
+                    <div class="gallery-info">
+                        <h3>Azure Cloudscape</h3>
+                        <p>Endless skies painted with soft, fluffy clouds, drifting peacefully above.</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470" alt="Mountain Lake">
+                    <div class="gallery-info">
+                        <h3>Reflections on the Lake</h3>
+                        <p>Serene mountain lake reflecting the crisp blue sky and surrounding peaks.</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429" alt="Sunset Field">
+                    <div class="gallery-info">
+                        <h3>Golden Hour Field</h3>
+                        <p>A field bathed in the warm, golden light of sunset, evoking tranquility.</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e" alt="Forest Path">
+                    <div class="gallery-info">
+                        <h3>Enchanted Forest Path</h3>
+                        <p>A winding path through a dense, green forest, inviting exploration.</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29" alt="Sunrise Clouds">
+                    <div class="gallery-info">
+                        <h3>Sunrise Spectacle</h3>
+                        <p>Vibrant clouds illuminated by the rising sun, painting the sky with color.</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3" alt="Aurora Borealis">
+                    <div class="gallery-info">
+                        <h3>Northern Lights Dance</h3>
+                        <p>The breathtaking Aurora Borealis illuminating the night sky.</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e" alt="Flowing River">
+                    <div class="gallery-info">
+                        <h3>Gentle River Flow</h3>
+                        <p>A serene river winding through a lush green landscape.</p>
+                    </div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-4.0.3&q=80" alt="Desert Sunset">
+                    <div class="gallery-info">
+                        <h3>Desert Sunset Hues</h3>
+                        <p>Vibrant colors of a sunset over the vast desert landscape.</p>
+                    </div>
+                </div>  
+            </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 The Whispering Willow. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="music.html">Music</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const navToggle = document.getElementById("nav-toggle");
+        const mainNav = document.getElementById("main-nav");
+
+        navToggle.addEventListener("click", () => {
+            navToggle.classList.toggle("active");
+            mainNav.classList.toggle("active");
+        });
+    </script>
+
+</body>
+</html>
