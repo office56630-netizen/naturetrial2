@@ -4,7 +4,6 @@ const cors = require("cors");
 const path = require("path");
 
 const app = express();
-const PORT = 3000;
 
 // middleware
 app.use(cors());
@@ -41,7 +40,5 @@ app.get("/search", async (req, res) => {
   }
 });
 
-// start server
-app.listen(PORT, () => {
-  console.log(`Server running → http://localhost:${PORT}`);
-});
+// 🔥 EXPORT for Vercel (NO listen)
+module.exports = app;
